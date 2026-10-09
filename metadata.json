@@ -1,0 +1,6 @@
+{
+  "name": "Treele Hub - Portal Corporativo de Sistemas",
+  "description": "Plataforma centralizadora de sistemas corporativos com autenticação Single Sign-On (SSO), catálogo integrado, controle de acessos RBAC e monitoramento.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

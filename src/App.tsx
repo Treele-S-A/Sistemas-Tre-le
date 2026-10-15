@@ -1,211 +1,26 @@
-import React, { useState, useMemo } from 'react';
-import { User, EnterpriseSystem, CategoryId } from './types';
-import { PRESET_USERS } from './data/usersData';
-import { SYSTEM_CATEGORIES, INITIAL_SYSTEMS } from './data/systemsData';
+import { useEffect, useState } from 'react';
+import { Search, X, ArrowUpRight, Star, Grid2X2, Clock3 } from 'lucide-react';
+import { INITIAL_SYSTEMS, SYSTEM_CATEGORIES } from './data/systemsData';
 import { Header } from './components/Header';
 import { SystemCard } from './components/SystemCard';
-import { SystemModalWorkspace } from './components/SystemModalWorkspace';
-import { LoginScreen } from './components/LoginScreen';
-import { Search, X, Star } from 'lucide-react';
-
+import hero from './assets/images/treele-hero-bg.png';
+const normalize = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 export default function App() {
-  // Authentication State
-  const [currentUser, setCurrentUser] = useState<User | null>(PRESET_USERS[0]);
-
-  // Data State
-  const [systems] = useState<EnterpriseSystem[]>(INITIAL_SYSTEMS);
-  const [favoriteIds, setFavoriteIds] = useState<string[]>(['sys_erp', 'sys_ponto', 'sys_workspace', 'sys_slack']);
-
-  // Filters
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
-  const [activeFilter, setActiveFilter] = useState<'all' | 'favorites'>('all');
-
-  // Modal State
-  const [activeWorkspaceSystem, setActiveWorkspaceSystem] = useState<EnterpriseSystem | null>(null);
-
-  const handleToggleFavorite = (systemId: string) => {
-    setFavoriteIds((prev) =>
-      prev.includes(systemId)
-        ? prev.filter((id) => id !== systemId)
-        : [...prev, systemId]
-    );
-  };
-
-  const handleLaunchSystem = (system: EnterpriseSystem) => {
-    setActiveWorkspaceSystem(system);
-  };
-
-  // Filtered systems
-  const filteredSystems = useMemo(() => {
-    return systems.filter((sys) => {
-      // Search
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
-        const matchName = sys.name.toLowerCase().includes(query);
-        const matchDesc = sys.description.toLowerCase().includes(query);
-        const matchShort = sys.shortCode.toLowerCase().includes(query);
-        const matchVendor = sys.vendor.toLowerCase().includes(query);
-        if (!matchName && !matchDesc && !matchShort && !matchVendor) {
-          return false;
-        }
-      }
-
-      // Favorites
-      if (activeFilter === 'favorites') {
-        if (!favoriteIds.includes(sys.id)) return false;
-      }
-
-      // Category
-      if (selectedCategory !== 'all' && sys.category !== selectedCategory) {
-        return false;
-      }
-
-      return true;
-    });
-  }, [systems, searchQuery, activeFilter, favoriteIds, selectedCategory]);
-
-  if (!currentUser) {
-    return <LoginScreen onLogin={(user) => setCurrentUser(user)} />;
-  }
-
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
-      {/* Header */}
-      <Header
-        currentUser={currentUser}
-        onSwitchUser={(user) => setCurrentUser(user)}
-        onLogout={() => setCurrentUser(null)}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
-        favoritesCount={favoriteIds.length}
-      />
-
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        {/* Title & Search Header */}
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-slate-200">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                Sistemas Corporativos
-              </h1>
-              <p className="text-sm text-slate-500 mt-1">
-                Escolha o sistema que deseja acessar com sua conta corporativa ({currentUser.email}):
-              </p>
-            </div>
-
-            {/* Search Input */}
-            <div className="w-full md:w-80 relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-              <input
-                type="text"
-                placeholder="Buscar sistema pelo nome..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-xs bg-white border border-slate-200 rounded-xl pl-9 pr-9 py-2.5 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 shadow-xs"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Category Filter Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pt-4 pb-1 no-scrollbar">
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-                selectedCategory === 'all'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
-              }`}
-            >
-              Todos ({systems.length})
-            </button>
-            {SYSTEM_CATEGORIES.map((cat) => {
-              const count = systems.filter((s) => s.category === cat.id).length;
-              if (count === 0) return null;
-              const isSelected = selectedCategory === cat.id;
-
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                    isSelected
-                      ? 'bg-blue-600 text-white font-semibold shadow-xs'
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
-                  }`}
-                >
-                  {cat.name} ({count})
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Grid of System Boxes */}
-        {filteredSystems.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredSystems.map((system) => (
-              <SystemCard
-                key={system.id}
-                system={system}
-                isFavorite={favoriteIds.includes(system.id)}
-                onToggleFavorite={handleToggleFavorite}
-                onLaunchSystem={handleLaunchSystem}
-              />
-            ))}
-          </div>
-        ) : (
-          /* Empty Search State */
-          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3">
-            <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400">
-              <Search className="w-6 h-6" />
-            </div>
-            <h3 className="text-sm font-bold text-slate-800">Nenhum sistema encontrado</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Nenhum resultado corresponde à sua busca "{searchQuery}".
-            </p>
-            <button
-              onClick={() => {
-                setSearchQuery('');
-                setSelectedCategory('all');
-                setActiveFilter('all');
-              }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-xs"
-            >
-              Ver todos os sistemas
-            </button>
-          </div>
-        )}
-
-      </main>
-
-      {/* Clean Footer */}
-      <footer className="mt-auto border-t border-slate-200 bg-white py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-slate-500">
-          <span>Treele Hub · Central de Sistemas</span>
-          <span className="font-mono text-[11px] text-slate-400">Conectado como {currentUser.email}</span>
-        </div>
-      </footer>
-
-      {/* System Workspace Launch Dialog */}
-      {activeWorkspaceSystem && (
-        <SystemModalWorkspace
-          system={activeWorkspaceSystem}
-          currentUser={currentUser}
-          onClose={() => setActiveWorkspaceSystem(null)}
-        />
-      )}
-
-    </div>
-  );
+  const [query, setQuery] = useState('');
+  const [area, setArea] = useState('all');
+  const [filter, setFilter] = useState('all');
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    try { const saved = JSON.parse(localStorage.getItem('treele:favorites') || '[]'); return Array.isArray(saved) ? saved.filter(id => typeof id === 'string' && INITIAL_SYSTEMS.some(s => s.id === id)) : []; } catch { return []; }
+  });
+  useEffect(() => { try { localStorage.setItem('treele:favorites', JSON.stringify(favorites)); } catch {} }, [favorites]);
+  const systems = INITIAL_SYSTEMS.filter(s => (area === 'all' || s.category === area) && (filter === 'all' || (filter === 'favorites' && favorites.includes(s.id)) || (filter === 'active' && s.isActive) || (filter === 'pending' && !s.isActive)) && normalize([s.name, s.description, s.domain, ...s.tags].join(' ')).includes(normalize(query.trim())));
+  const active = INITIAL_SYSTEMS.filter(s => s.isActive).length;
+  const tabs = [{id:'all', label:'Todos os serviços', count:INITIAL_SYSTEMS.length, icon:Grid2X2}, {id:'favorites', label:'Favoritos', count:favorites.length, icon:Star}, {id:'active', label:'Disponíveis', count:active, icon:ArrowUpRight}, {id:'pending', label:'Em implantação', count:INITIAL_SYSTEMS.length-active, icon:Clock3}];
+  return <div className="portal"><a className="skip-link" href="#servicos">Ir para os serviços</a><Header /><main id="conteudo" className="container">
+    <section className="hero"><img className="hero-art" src={hero} alt="" /><div className="hero-content"><span className="eyebrow"><i /> CONECTANDO NOSSA EMPRESA</span><h1>Tudo o que você precisa.<br /><em>Em um só lugar.</em></h1><p>Acesse os sistemas e serviços da Treèle com praticidade.<br />Mais conexão para construir o nosso dia a dia.</p><a className="hero-link" href="#servicos">Explorar serviços <ArrowUpRight size={17} /></a></div></section>
+    <section id="servicos" className="catalog" aria-labelledby="catalog-title"><div className="catalog-heading"><div><span className="section-kicker">ACESSO RÁPIDO</span><h2 id="catalog-title">Nossos serviços</h2><p>Encontre a ferramenta certa para o seu trabalho.</p></div><div className="search"><Search size={19} /><input aria-label="Buscar serviços" placeholder="Buscar serviço, área ou palavra-chave" value={query} onChange={e => setQuery(e.target.value)} />{query && <button aria-label="Limpar busca" onClick={() => setQuery('')}><X size={17} /></button>}</div></div>
+    <div className="catalog-toolbar"><nav className="tabs" aria-label="Filtrar serviços">{tabs.map(t => <button key={t.id} aria-pressed={filter === t.id} className={filter === t.id ? 'selected' : ''} onClick={() => setFilter(t.id)}><t.icon size={16} />{t.label}<span>{t.count}</span></button>)}</nav><label className="category-select">Área<select value={area} onChange={e => setArea(e.target.value)}><option value="all">Todas as áreas</option>{SYSTEM_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label></div>
+    <p className="result-count" aria-live="polite">{systems.length} {systems.length === 1 ? 'serviço encontrado' : 'serviços encontrados'}</p>
+    {systems.length ? <div className="services-grid">{systems.map(system => <SystemCard key={system.id} system={system} isFavorite={favorites.includes(system.id)} onToggleFavorite={id => setFavorites(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])} />)}</div> : <div className="empty-state"><Search size={30} /><h3>{filter === 'favorites' && !favorites.length ? 'Seus atalhos ficam aqui' : 'Nenhum serviço encontrado'}</h3><p>{filter === 'favorites' && !favorites.length ? 'Toque na estrela de um serviço para salvá-lo neste navegador.' : 'Experimente outra palavra ou ajuste os filtros.'}</p><button onClick={() => {setQuery('');setArea('all');setFilter('all');}}>Ver todos os serviços</button></div>}
+    <div className="catalog-note"><ArrowUpRight size={16} /><p>Os serviços abrem em uma nova aba. Utilize suas credenciais de cada sistema para entrar.</p></div></section></main><footer className="footer container"><span>© {new Date().getFullYear()} Treèle Construtora</span><span>Central de serviços · Tecnologia que aproxima.</span></footer></div>;
 }

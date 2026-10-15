@@ -25,6 +25,12 @@ import {
   FileSignature,
   Server,
   AppWindow,
+  HardHat,
+  Compass,
+  Ruler,
+  Boxes,
+  FileSpreadsheet,
+  LayoutGrid,
 } from 'lucide-react';
 
 interface SystemIconProps {
@@ -57,6 +63,12 @@ const iconMap: Record<string, React.ElementType> = {
   Code2,
   FileSignature,
   Server,
+  HardHat,
+  Compass,
+  Ruler,
+  Boxes,
+  FileSpreadsheet,
+  LayoutGrid,
 };
 
 export const SystemIcon: React.FC<SystemIconProps> = ({ name, className = 'w-5 h-5' }) => {

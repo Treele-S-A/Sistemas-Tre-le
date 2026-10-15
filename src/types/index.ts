@@ -1,12 +1,16 @@
-export type Department = 
-  | 'TI' 
-  | 'Financeiro' 
-  | 'Recursos Humanos' 
-  | 'Comercial & Vendas' 
-  | 'Operações & Engenharia' 
-  | 'Diretoria Executiva' 
-  | 'Atendimento & SAC' 
-  | 'Jurídico & Contratos' 
+export type Department =
+  | 'TI & Sistemas'
+  | 'Engenharia & Obras'
+  | 'Suprimentos & Compras'
+  | 'Financeiro & Controladoria'
+  | 'Projetos & BIM'
+  | 'Planejamento'
+  | 'Diretoria Executiva'
+  | 'Recursos Humanos'
+  | 'Comercial & Vendas'
+  | 'TI'
+  | 'Financeiro'
+  | 'Operações & Engenharia'
   | 'Todos';
 
 export type UserRole = 'sysadmin' | 'gestor' | 'colaborador';
@@ -27,16 +31,17 @@ export interface User {
   favoriteSystemIds: string[];
 }
 
-export type CategoryId = 
-  | 'erp' 
-  | 'crm' 
-  | 'rh' 
-  | 'financeiro' 
-  | 'bi' 
-  | 'ti' 
-  | 'comunicacao' 
-  | 'atendimento' 
-  | 'juridico';
+export type CategoryId =
+  | 'obras'
+  | 'erp'
+  | 'engenharia'
+  | 'suprimentos'
+  | 'bi'
+  | 'ti'
+  | 'crm'
+  | 'rh'
+  | 'financeiro'
+  | 'comunicacao';
 
 export interface SystemCategory {
   id: CategoryId;
@@ -56,6 +61,11 @@ export interface EnterpriseSystem {
   description: string;
   iconName: string;
   url: string;
+  domain: string;
+  logoUrl?: string;
+  hasLogo: boolean;
+  isActive: boolean;
+  statusBadge?: string;
   ssoProtocol: SSOProtocol;
   allowedDepartments: Department[];
   allowedRoles: UserRole[];

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { User } from '../types';
 import { PRESET_USERS } from '../data/usersData';
-import { 
-  Layers, 
-  ShieldCheck, 
-  ArrowRight, 
-  Lock, 
-  Mail, 
-  KeyRound,
+import treeleLogo from '../assets/images/treele-logo.png';
+import treeleHeroBg from '../assets/images/treele-hero-bg.png';
+import {
+  ShieldCheck,
+  ArrowRight,
+  Lock,
+  Mail,
   CheckCircle2,
-  Server
+  HardHat,
+  Compass,
+  Building2
 } from 'lucide-react';
 
 interface LoginScreenProps {
@@ -31,7 +33,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsAuthenticating(true);
-    
+
     setTimeout(() => {
       const foundUser = PRESET_USERS.find((u) => u.email.toLowerCase() === email.toLowerCase());
       if (foundUser) {
@@ -46,54 +48,63 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         });
       }
       setIsAuthenticating(false);
-    }, 600);
+    }, 500);
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      
-      {/* Background Architectural Hero Visual */}
-      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+    <div className="min-h-screen bg-[#072430] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+
+      {/* Background Architectural Blueprint Graphic from Treèle */}
+      <div className="absolute inset-0 z-0 opacity-25 pointer-events-none">
         <img
-          src="/src/assets/images/corporate_hub_hero_1791551727532.jpg"
-          alt="Treele Corporate Headquarters"
+          src={treeleHeroBg}
+          alt="Treèle Construtora"
           className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#072430] via-[#072430]/80 to-[#072430]/60" />
       </div>
 
+      {/* Decorative Brand Circles */}
+      <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#84cc16]/10 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-[#0284c7]/10 blur-3xl pointer-events-none" />
+
+      {/* Brand Header */}
       <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md text-center mb-6">
-        <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-lg mb-3">
-          <Layers className="w-7 h-7" />
+        <div className="bg-white/95 backdrop-blur-md p-4 rounded-3xl shadow-2xl inline-block mb-3 border border-white/20">
+          <img
+            src={treeleLogo}
+            alt="Treèle Construtora"
+            className="h-12 sm:h-14 w-auto object-contain mx-auto"
+          />
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">
-          Treele Hub
+        <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
+          Central Corporativa de Sistemas
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
-          Plataforma Centralizadora de Sistemas Corporativos & SSO
+        <p className="text-xs text-slate-300 mt-1">
+          Acesso seguro aos portais de engenharia, gestão e canteiros
         </p>
       </div>
 
+      {/* Form Card */}
       <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-2xl rounded-2xl border border-slate-200/80 sm:px-10">
-          
+        <div className="bg-white py-8 px-6 shadow-2xl rounded-3xl border border-slate-200 sm:px-10">
+
           <div className="mb-6 pb-4 border-b border-slate-100 flex items-center justify-between">
             <div>
               <span className="text-xs font-bold text-slate-900 block">Single Sign-On (SSO)</span>
-              <span className="text-[11px] text-slate-500">Autenticação centralizada com protocolo SAML / OIDC</span>
+              <span className="text-[11px] text-slate-500">Credenciais corporativas @treele.com.br</span>
             </div>
-            <div className="w-7 h-7 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-[#005072]/10 text-[#005072] flex items-center justify-center font-bold">
               <ShieldCheck className="w-4 h-4" />
             </div>
           </div>
 
           {/* Quick Select Profile for Demo */}
           <div className="mb-6">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-2">
-              Selecione um Perfil para Testar:
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+              Selecione o Perfil Treèle para Acessar:
             </span>
-            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+            <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
               {PRESET_USERS.map((usr) => {
                 const isSelected = usr.id === selectedPresetId;
                 return (
@@ -101,10 +112,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                     key={usr.id}
                     type="button"
                     onClick={() => handleSelectPreset(usr)}
-                    className={`w-full text-left p-2 rounded-lg border text-xs flex items-center justify-between transition-colors ${
+                    className={`w-full text-left p-2.5 rounded-xl border text-xs flex items-center justify-between transition-all ${
                       isSelected
-                        ? 'border-blue-600 bg-blue-50/70 text-blue-900'
-                        : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
+                        ? 'border-[#005072] bg-[#005072]/10 text-[#005072] font-semibold shadow-xs'
+                        : 'border-slate-200 bg-slate-50/70 hover:bg-slate-100 text-slate-700'
                     }`}
                   >
                     <div className="truncate">
@@ -114,7 +125,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                       </span>
                     </div>
                     {isSelected && (
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 ml-1" />
+                      <CheckCircle2 className="w-4 h-4 text-[#005072] shrink-0 ml-1.5" />
                     )}
                   </button>
                 );
@@ -134,14 +145,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#005072]/20 focus:border-[#005072]"
                 />
               </div>
             </div>
 
             <div>
               <label className="text-xs font-bold text-slate-700 block mb-1">
-                Senha de Rede Corporativa
+                Senha de Rede
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
@@ -150,7 +161,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#005072]/20 focus:border-[#005072]"
                 />
               </div>
             </div>
@@ -161,35 +172,35 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                   type="checkbox"
                   checked={mfaEnabled}
                   onChange={(e) => setMfaEnabled(e.target.checked)}
-                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-slate-300 text-[#005072] focus:ring-[#005072]"
                 />
-                <span>Validar Token MFA / 2FA</span>
+                <span>Token MFA Verificado</span>
               </label>
 
-              <span className="text-[11px] text-blue-600 hover:underline cursor-pointer">
-                Esqueceu a senha?
+              <span className="text-[11px] text-[#005072] hover:underline cursor-pointer font-medium">
+                Suporte TI
               </span>
             </div>
 
             <button
               type="submit"
               disabled={isAuthenticating}
-              className="w-full py-2.5 px-4 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-lg shadow-md transition-all flex items-center justify-center gap-2 mt-4"
+              className="w-full py-3 px-4 text-xs font-bold text-white bg-[#005072] hover:bg-[#003850] active:scale-98 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 mt-4"
             >
-              <span>{isAuthenticating ? 'Autenticando no IdP...' : 'Entrar no Treele Hub'}</span>
+              <span>{isAuthenticating ? 'Autenticando no IdP Treèle...' : 'Entrar na Central de Sistemas'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
           <div className="mt-6 pt-4 border-t border-slate-100 text-center">
-            <span className="text-[11px] text-slate-400 block">
-              Certificação ISO 27001 · Conexão Criptografada TLS 1.3
+            <span className="text-[10px] text-slate-400 block font-medium">
+              Treèle Construtora · Conexão Criptografada TLS 1.3 · ISO 27001
             </span>
           </div>
 
         </div>
       </div>
-      
+
     </div>
   );
 };

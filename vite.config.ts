@@ -1,14 +1,33 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import {defineConfig, type Plugin} from 'vite';
+
+// No localhost, /api/status roda o mesmo verificador da função da Vercel (api/status.ts).
+function statusLocal(): Plugin {
+  return {
+    name: 'status-local',
+    configureServer(server) {
+      server.middlewares.use('/api/status', async (_req, res) => {
+        try {
+          const { verificarStatus } = await server.ssrLoadModule('/server/verificarStatus.ts');
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(JSON.stringify(await verificarStatus()));
+        } catch (causa) {
+          res.statusCode = 500;
+          res.end(JSON.stringify({ erro: causa instanceof Error ? causa.message : 'Falha ao verificar.' }));
+        }
+      });
+    },
+  };
+}
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), statusLocal()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(import.meta.dirname, '.'),
       },
     },
     server: {

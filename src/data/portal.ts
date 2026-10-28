@@ -6,7 +6,7 @@ export const AREAS: Partial<Record<CategoryId, { cor: string; curto: string }>> 
   obras: { cor: '#f0a33a', curto: 'Canteiro & Obras' },
   engenharia: { cor: '#3aa0d8', curto: 'Engenharia' },
   suprimentos: { cor: '#7cc242', curto: 'Suprimentos' },
-  bi: { cor: '#9b7be6', curto: 'BI' },
+  bi: { cor: '#9b7be6', curto: 'Dados e Indicadores' },
   ti: { cor: '#4fc3c9', curto: 'TI' },
   crm: { cor: '#00b8d4', curto: 'Comercial' },
   rh: { cor: '#e91e8c', curto: 'RH' },

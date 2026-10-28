@@ -57,4 +57,4 @@ demais saem deles trocando só a cor.
 - 15/10/2026: catálogo inicial (Central de serviços).
 - 28/10/2026: repaginado como **Portal Treèle** (status ao vivo, tema claro/escuro, animações, Ctrl+K). No mesmo dia,
   ajustes do relatório de teste no navegador: grid único, hero compacto, chips, busca única, botão "Ajuda" (o ícone
-  antigo parecia engrenagem de configuração), cartões compactos, ícones da Treèle por cor, Simulador e RH.
+  antigo parecia engrenagem de configuração), cartões compactos, ícones da Treèle por cor, Simulador e RH. Animação da troca de filtro suavizada; área BI renomeada para Dados e Indicadores.

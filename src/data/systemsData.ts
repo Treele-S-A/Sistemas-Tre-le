@@ -27,7 +27,7 @@ export const SYSTEM_CATEGORIES: SystemCategory[] = [
   },
   {
     id: 'bi',
-    name: 'BI & Indicadores',
+    name: 'Dados e Indicadores',
     description: 'Dashboards executivos, curva S e metas estratégicas',
     iconName: 'BarChart3',
   },

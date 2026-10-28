@@ -76,8 +76,9 @@ h2 { margin: 0; font-size: 21px; font-weight: 800; letter-spacing: -.5px; }
 .chip-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--chip); }
 
 .services-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.service-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--area); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; transition: border-color .25s, box-shadow .25s, transform .25s; }
-.service-card:hover { border-color: color-mix(in srgb, var(--area) 55%, var(--border)); border-top-color: var(--area); box-shadow: var(--shadow); transform: translateY(-3px); }
+.service-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--area); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; transition: border-color .25s, box-shadow .25s; will-change: transform; }
+/* O movimento (hover e troca de filtro) é do motion; aqui só borda e sombra, para não brigar com a animação. */
+.service-card:hover { border-color: color-mix(in srgb, var(--area) 55%, var(--border)); border-top-color: var(--area); box-shadow: var(--shadow); }
 .card-head { display: flex; align-items: flex-start; gap: 12px; }
 .service-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; color: var(--app); background: color-mix(in srgb, var(--app) 14%, var(--surface)); border: 1px solid color-mix(in srgb, var(--app) 22%, transparent); transition: transform .3s; }
 .service-icon.has-logo { background: #ffffff; padding: 6px; }

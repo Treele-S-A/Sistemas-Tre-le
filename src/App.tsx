@@ -29,6 +29,9 @@ export default function App() {
   const [busca, setBusca] = useState('');
   const [filtro, setFiltro] = useState<Filtro>('todos');
   const campoBusca = useRef<HTMLInputElement>(null);
+  // Depois da primeira pintura, os cartões param de entrar em cascata (só a abertura da página tem o efeito).
+  const jaAbriu = useRef(false);
+  useEffect(() => { const t = window.setTimeout(() => { jaAbriu.current = true; }, 800); return () => window.clearTimeout(t); }, []);
 
   useEffect(() => {
     const atalho = (e: KeyboardEvent) => {
@@ -114,14 +117,14 @@ export default function App() {
           </div>
 
           {sistemas.length ? (
-            <motion.div layout className="services-grid">
-              <AnimatePresence mode="popLayout">
+            <div className="services-grid">
+              <AnimatePresence mode="popLayout" initial={true}>
                 {sistemas.map((s, i) => (
-                  <SystemCard key={s.id} system={s} indice={i} status={status?.get(s.id)} carregando={!status && !falhou}
+                  <SystemCard key={s.id} system={s} indice={jaAbriu.current ? -1 : i} status={status?.get(s.id)} carregando={!status && !falhou}
                     isFavorite={favoritos.includes(s.id)} onToggleFavorite={alternarFavorito} />
                 ))}
               </AnimatePresence>
-            </motion.div>
+            </div>
           ) : (
             <div className="empty-state">
               <Search size={28} />

@@ -1,14 +1,15 @@
 import { motion } from 'motion/react';
-import { ArrowUpRight, Star } from 'lucide-react';
+import { ArrowUpRight, Hammer, Star } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import type { EnterpriseSystem } from '../types';
 import type { StatusSistema } from '../../server/verificarStatus';
 import { SYSTEM_CATEGORIES } from '../data/systemsData';
+import { AREAS } from '../data/portal';
 import { SystemIcon } from './SystemIcon';
 
 interface Props {
   system: EnterpriseSystem; indice: number; status: StatusSistema | undefined; carregando: boolean;
-  isFavorite: boolean; onToggleFavorite: (id: string) => void; onAbrir: (id: string) => void;
+  isFavorite: boolean; onToggleFavorite: (id: string) => void;
 }
 
 const ROTULO = { online: 'Online', lento: 'Lento', fora: 'Fora do ar' } as const;
@@ -22,30 +23,40 @@ export function StatusPill({ status, carregando }: { status: StatusSistema | und
   );
 }
 
-export function SystemCard({ system, indice, status, carregando, isFavorite, onToggleFavorite, onAbrir }: Props) {
+export function SystemCard({ system, indice, status, carregando, isFavorite, onToggleFavorite }: Props) {
   const area = SYSTEM_CATEGORIES.find((c) => c.id === system.category)?.name;
+  const cor = AREAS[system.category]?.cor ?? system.appColor;
   return (
-    <motion.article className="service-card" style={{ '--app': system.appColor } as CSSProperties}
-      layout initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }}
-      transition={{ duration: 0.35, delay: Math.min(indice, 12) * 0.045, ease: [0.22, 1, 0.36, 1] }}>
-      <div className="card-top">
-        <div className="service-icon">
+    <motion.article className="service-card" style={{ '--area': cor, '--app': system.appColor } as CSSProperties}
+      layout initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.3, delay: Math.min(indice, 10) * 0.04, ease: [0.22, 1, 0.36, 1] }}>
+      <div className="card-head">
+        {/* Ícones próprios da Treèle (/logos/) já são redondos e coloridos: sem a caixa branca dos logos de terceiros. */}
+        <div className={`service-icon ${system.hasLogo && system.logoUrl ? (system.logoUrl.startsWith('/logos/') ? 'logo-treele' : 'has-logo') : ''}`}>
           {system.hasLogo && system.logoUrl
-            ? <img src={system.logoUrl} alt="" loading="lazy" />
+            ? <img src={system.logoUrl} alt={system.name} loading="lazy" />
             : <SystemIcon name={system.iconName} className="system-icon" />}
+        </div>
+        <div className="card-title">
+          <span className="card-category">{area}</span>
+          <h3>{system.name}</h3>
         </div>
         <button type="button" className={`favorite ${isFavorite ? 'is-favorite' : ''}`} onClick={() => onToggleFavorite(system.id)}
           aria-label={`${isFavorite ? 'Remover' : 'Adicionar'} ${system.name} ${isFavorite ? 'dos' : 'aos'} favoritos`} aria-pressed={isFavorite}>
-          <Star size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+          <Star size={16} fill={isFavorite ? 'currentColor' : 'none'} />
         </button>
       </div>
-      <span className="card-category">{area}</span>
-      <h3>{system.name}</h3>
       <p className="card-description">{system.description}</p>
       <div className="card-bottom">
-        <StatusPill status={status} carregando={carregando} />
-        <a href={system.url} target="_blank" rel="noopener noreferrer" onClick={() => onAbrir(system.id)}
-          aria-label={`Acessar ${system.name} (abre em nova aba)`}>Acessar <ArrowUpRight size={16} /></a>
+        {system.isActive && system.url ? <>
+          <StatusPill status={status} carregando={carregando} />
+          <a href={system.url} target="_blank" rel="noopener noreferrer" aria-label={`Acessar ${system.name} (abre em nova aba)`}>
+            Acessar <ArrowUpRight size={15} />
+          </a>
+        </> : <>
+          <span className="status em-desenvolvimento"><Hammer size={13} />Em desenvolvimento</span>
+          <span className="em-breve">Em breve</span>
+        </>}
       </div>
     </motion.article>
   );

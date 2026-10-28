@@ -26,6 +26,7 @@ async function testar(id: string, url: string): Promise<StatusSistema> {
 }
 
 export async function verificarStatus(): Promise<RespostaStatus> {
-  const sistemas = await Promise.all(INITIAL_SYSTEMS.map((s) => testar(s.id, s.url)));
+  // Sistemas em desenvolvimento (sem link) ficam fora da verificação.
+  const sistemas = await Promise.all(INITIAL_SYSTEMS.filter((s) => s.isActive && s.url).map((s) => testar(s.id, s.url)));
   return { verificadoEm: new Date().toISOString(), sistemas };
 }

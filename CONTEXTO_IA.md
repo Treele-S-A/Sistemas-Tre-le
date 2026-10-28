@@ -3,6 +3,13 @@
 Leia primeiro o **`ESCOPO.md`** (recursos, lista dos sistemas, como incluir sistema/aviso, pendências, histórico).
 Mapa de todos os sistemas: `C:\GitHub\Desenvolvimento\MAPA_SISTEMAS.md`.
 
+## Onde paramos
+
+- **28/10/2026:** Portal Treèle repaginado e publicado (grid único, chips, busca única, status ao vivo, ícones da
+  Treèle, Simulador e RH em desenvolvimento).
+- **Próximo passo / pendente com o usuário:** ramal e e-mail da TI (bloco "Precisa de ajuda?"), links úteis,
+  logos com nome (aguardam a logo oficial em vetor) e o link do RH quando ficar pronto.
+
 ## O que é
 Página de entrada com todos os sistemas da Treèle: cartões com status ao vivo (online/lento/fora), busca (Ctrl+K),
 filtros por área, favoritos, tema claro/escuro, avisos e ajuda (GLPI).
@@ -28,3 +35,9 @@ filtros por área, favoritos, tema claro/escuro, avisos e ajuda (GLPI).
 - Sistemas da Treèle primeiro (mesmo em desenvolvimento), depois os de outras empresas (Sienge, Mobuss).
 - Sistema em desenvolvimento: `isActive: false`, `url: ''` (sem link, fora do status e da contagem).
 - Não inventar contatos nem links: o que estiver vazio em `portal.ts` não aparece.
+
+## Histórico
+
+Uma linha por trabalho, a mais recente no fim: `AAAA-MM-DD · pessoa · IA usada · o que mudou · commit`.
+
+- 2026-10-28 · TI (titreele) · Claude Code · criado este `CONTEXTO_IA.md`, `CLAUDE.md` e `AGENTS.md` com as regras obrigatórias de registro · (este commit)

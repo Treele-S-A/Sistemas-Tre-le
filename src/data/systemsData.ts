@@ -1,4 +1,4 @@
-import { EnterpriseSystem, SystemCategory, AuditLog } from '../types';
+import type { EnterpriseSystem, SystemCategory, AuditLog } from '../types';
 
 export const SYSTEM_CATEGORIES: SystemCategory[] = [
   {

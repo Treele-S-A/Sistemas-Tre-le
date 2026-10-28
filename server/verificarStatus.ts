@@ -1,4 +1,4 @@
-import { INITIAL_SYSTEMS } from '../src/data/systemsData';
+import { INITIAL_SYSTEMS } from '../src/data/systemsData.js';
 
 // Testa, do servidor, se cada sistema responde. Usado pela função /api/status (Vercel) e pelo
 // servidor local de desenvolvimento (vite.config.ts). Não envia credencial nenhuma: só abre a página inicial.

@@ -5,6 +5,10 @@ Mapa de todos os sistemas: `C:\GitHub\Desenvolvimento\MAPA_SISTEMAS.md`.
 
 ## Onde paramos
 
+- **30/10/2026, publicação autorizada:** o cartão do RH agora abre `https://rh.treele.com.br`, entra na verificação de status e usa descrição dos módulos disponíveis. O endereço respondeu HTTP 200. Favicon branco do Portal e ícone laranja do GLPI integrados. Próximo passo: validar o build e publicar a `main`; pendente com a TI: conferir o cartão em produção após o deploy.
+
+- **30/10/2026:** favicon da aba usa o símbolo branco da Treèle sobre fundo petróleo; cartão do GLPI usa logo laranja. Referências atualizadas para evitar cache antigo. Alterações somente locais, sem commit/publicação a pedido do usuário.
+- **Próximo passo visual:** validar em `http://localhost:3001/`. As pendências funcionais de 28/10 seguem abaixo.
 - **28/10/2026:** Portal Treèle repaginado e publicado (grid único, chips, busca única, status ao vivo, ícones da
   Treèle, Simulador e RH em desenvolvimento).
 - **Próximo passo / pendente com o usuário:** ramal e e-mail da TI (bloco "Precisa de ajuda?"), links úteis,
@@ -41,3 +45,5 @@ filtros por área, favoritos, tema claro/escuro, avisos e ajuda (GLPI).
 Uma linha por trabalho, a mais recente no fim: `AAAA-MM-DD · pessoa · IA usada · o que mudou · commit`.
 
 - 2026-10-28 · TI (titreele) · Claude Code · criado este `CONTEXTO_IA.md`, `CLAUDE.md` e `AGENTS.md` com as regras obrigatórias de registro · (este commit)
+- 2026-10-30 · TI · Codex · favicon branco do Portal, GLPI laranja no catálogo e CHANGELOG.md local · sem commit a pedido do usuário
+- 2026-10-30 · TI · Codex · cartão do RH ativado com link de produção e melhorias visuais prontas para publicação · (este commit)

@@ -10,7 +10,7 @@ Portal de acesso aos sistemas da Treèle Construtora. Produção: **https://tree
 | Catálogo dos sistemas em grid único de 4 colunas, área como etiqueta e faixa colorida no cartão | ✅ | `src/data/systemsData.ts`, `src/data/portal.ts` (cores das áreas) |
 | Ordem: sistemas da Treèle primeiro (inclusive em desenvolvimento), depois os de outras empresas; favoritos antes de todos | ✅ | `ORDEM` em `src/data/portal.ts` |
 | Status ao vivo (online, lento, fora do ar), verificado no servidor a cada 2 min; "X de Y sistemas online" | ✅ | `server/verificarStatus.ts`, `api/status.ts` (função da Vercel) |
-| Sistema em desenvolvimento: cartão sem link, "Em desenvolvimento · Em breve", fora do status e da contagem | ✅ (RH) | `isActive: false` e `url: ''` no sistema |
+| Sistema em desenvolvimento: cartão sem link, "Em desenvolvimento · Em breve", fora do status e da contagem | ✅ (regra disponível; RH já ativo) | `isActive: false` e `url: ''` quando aplicável |
 | Busca única no topo (filtra ao digitar; Ctrl+K foca; Enter abre o primeiro) | ✅ | `src/components/Header.tsx` |
 | Filtros em chips: Todos, Favoritos, Fora do ar (só quando houver), áreas; contadores seguem a busca | ✅ | `src/App.tsx` |
 | Hero compacto com saudação, novidade e status | ✅ | `src/App.tsx` |
@@ -30,7 +30,7 @@ Portal de acesso aos sistemas da Treèle Construtora. Produção: **https://tree
 | 5 | Gestão de Empreiteiros | gestaoempreiteiros.treele.com.br | símbolo marrom | ✅ |
 | 6 | Simulador de Empreendimentos | simulador.treele.com.br | símbolo ciano | ✅ |
 | 7 | GLPI – Central de TI | glpi.treele.com.br | logo do GLPI | ✅ |
-| 8 | Sistema de RH | — | símbolo rosa | 🔧 em desenvolvimento |
+| 8 | Sistema de RH | rh.treele.com.br | símbolo rosa | ✅ ativo; módulos em evolução |
 | 9 | Sienge Plataforma | treele.sienge.com.br | logo do Sienge | ✅ (terceiro) |
 | 10 | Mobuss Construção | mobuss.com.br | logo do Mobuss | ✅ (terceiro) |
 
@@ -50,10 +50,11 @@ demais saem deles trocando só a cor.
 - Ramal e e-mail da TI para o bloco "Precisa de ajuda?".
 - Links úteis (manuais, políticas, contatos das obras).
 - Logos com nome (marca horizontal) de cada sistema: aguardando a logo oficial da Treèle em vetor (SVG/AI/PDF).
-- Descrição e link do Sistema de RH quando ficar pronto.
 
 ## Histórico
 
+- 30/10/2026: cartão do RH ativado com link `rh.treele.com.br`; ícones do Portal e GLPI atualizados.
+- 30/10/2026: favicon da aba do Portal Treèle em branco sobre fundo petróleo; ícone do GLPI no catálogo em laranja; somente local.
 - 15/10/2026: catálogo inicial (Central de serviços).
 - 28/10/2026: repaginado como **Portal Treèle** (status ao vivo, tema claro/escuro, animações, Ctrl+K). No mesmo dia,
   ajustes do relatório de teste no navegador: grid único, hero compacto, chips, busca única, botão "Ajuda" (o ícone
